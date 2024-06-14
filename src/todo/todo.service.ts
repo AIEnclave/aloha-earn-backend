@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Redis } from 'ioredis';
+import { AmqpConnection } from '@nestjs-plus/rabbitmq';
 import { Model } from 'mongoose';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -9,6 +12,8 @@ import { Todo, TodoDocument } from './schemas/todo.schema';
 export class TodoService {
   constructor(
     @InjectModel(Todo.name) private readonly model: Model<TodoDocument>,
+    @InjectRedis() private readonly redis: Redis,
+    private readonly amqpConnection: AmqpConnection,
   ) {}
 
   async findAll(): Promise<Todo[]> {
