@@ -7,13 +7,13 @@ import {
     Post,
     Put,
   } from '@nestjs/common';
-  import { CreateUserDto } from './dto/create-user.dto';
-  import { UpdateUserDto } from './dto/update-user.dto';
-  import { UserService } from './user.service';
+  import { CreateAINodeDto } from './dto/create.dto';
+  import { UpdateAINodeDto } from './dto/update.dto';
+  import { AINodeService } from './app.service';
   
-  @Controller('users')
-  export class UserController {
-    constructor(private readonly service: UserService) {}
+  @Controller('ainode')
+  export class AINodeController {
+    constructor(private readonly service: AINodeService) {}
   
     @Get()
     async index() {
@@ -26,13 +26,13 @@ import {
     }
   
     @Post()
-    async create(@Body() createUserDto: CreateUserDto) {
+    async create(@Body() createUserDto: CreateAINodeDto) {
       console.log({ createUserDto });
       return await this.service.create(createUserDto);
     }
   
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    async update(@Param('id') id: string, @Body() updateUserDto: UpdateAINodeDto) {
       return await this.service.update(id, updateUserDto);
     }
   

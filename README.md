@@ -20,3 +20,12 @@
 5. logger
 6. 
 ```
+
+# To Create Module, Controller, Service
+Ex:
+```
+nest g module Auth
+nest g controller Auth
+nest g service Auth
+
+```
