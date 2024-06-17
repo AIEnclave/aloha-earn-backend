@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsObject } from 'class-validator';
 import { Expose, Transform } from 'class-transformer';
 
 export class BaseUserDto {
@@ -17,7 +17,7 @@ export class BaseUserDto {
     @Expose()
     profileImageUrl: string;
 
-    @IsString()
+    @IsObject()
     @IsNotEmpty()
     @Expose()
     twitterProvider: object;

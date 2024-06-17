@@ -14,11 +14,6 @@ import {
   @Controller('users')
   export class UserController {
     constructor(private readonly service: UserService) {}
-
-    // @Get()
-    // async index() {
-    //   return await this.service.findAll();
-    // }
   
     @Get()
     async index() {
@@ -31,14 +26,14 @@ import {
     }
   
     @Post()
-    async create(@Body() createTodoDto: CreateUserDto) {
-      console.log({ createTodoDto });
-      return await this.service.create(createTodoDto);
+    async create(@Body() createUserDto: CreateUserDto) {
+      console.log({ createUserDto });
+      return await this.service.create(createUserDto);
     }
   
     @Put(':id')
-    async update(@Param('id') id: string, @Body() updateTodoDto: UpdateUserDto) {
-      return await this.service.update(id, updateTodoDto);
+    async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+      return await this.service.update(id, updateUserDto);
     }
   
     @Delete(':id')
