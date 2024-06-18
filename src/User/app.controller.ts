@@ -6,14 +6,19 @@ import {
     Param,
     Post,
     Put,
-    UseGuards
+    UseGuards,
+    Req
   } from '@nestjs/common';
   import { JwtService } from '@nestjs/jwt';
   import { AuthGuard } from '../auth.gaurd';
   import { CreateUserDto } from './dto/create.dto';
   import { UpdateUserDto } from './dto/update.dto';
+  import { UpdateCategoryDto } from './dto/updateCategory.dto'
   import { UserService } from './app.service';
-  import { Public } from '../app.decorator';
+
+  interface CustomRequest extends Request {
+    user?: any; // Adjust the type according to your user object
+  }
   
   @Controller('users')
   export class UserController {
@@ -22,15 +27,26 @@ import {
       private readonly jwtService: JwtService
     ) {}
   
-    @Public()
+    @UseGuards(AuthGuard)
     @Get()
     async index() {
       return await this.service.findAll();
     }
   
-    @Get(':id')
-    async find(@Param('id') id: string) {
-      return await this.service.findOne(id);
+    // @Get(':id')
+    // async find(@Param('id') id: string) {
+    //   return await this.service.findOne(id);
+    // }
+
+    @UseGuards(AuthGuard)
+    @Get('/categories')
+    async findCategories(@Req() request: CustomRequest) {
+      console.log("::::request.user::::", request.user)
+      let userDetails = await this.service.findByTwitterId(request.user.userDetails);
+      console.log("userDetails:::", userDetails)
+      return {
+        categories: userDetails.categories
+      }
     }
   
     @Post('signup')
@@ -42,22 +58,25 @@ import {
     @Post('signin')
     async signin(@Body() createUserDto: CreateUserDto) {
       console.log({ createUserDto });
-      let userDetails = await this.service.findByTwitterToken(createUserDto);
+      let userDetails = await this.service.findByTwitterId(createUserDto);
       if(userDetails) {
 
       } else {
         userDetails = await this.service.create(createUserDto);
       }
-      const alohaAccessToken = await this.jwtService.signAsync({userName: createUserDto.userName})
+      const alohaAccessToken = await this.jwtService.signAsync({userDetails: createUserDto})
       return {
         userDetails,
         alohaAccessToken
       }
     }
-  
-    @Put(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-      return await this.service.update(id, updateUserDto);
+
+    @UseGuards(AuthGuard)
+    @Put()
+    async update(@Body() updateCategoryDto: UpdateCategoryDto, @Req() request: CustomRequest) {
+      console.log("request.user::::::", request.user); 
+      let userDetails = await this.service.findByTwitterId(request.user.userDetails);
+      return await this.service.update(userDetails, updateCategoryDto);
     }
   
     @Delete(':id')

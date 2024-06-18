@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsObject } from 'class-validator';
+import { IsString, IsArray, IsNotEmpty, IsObject, IsNumber } from 'class-validator';
 import { Expose, Transform } from 'class-transformer';
 
 export class BaseUserDto {
@@ -10,19 +10,19 @@ export class BaseUserDto {
     @IsString()
     @IsNotEmpty()
     @Expose()
-    userName: string;
+    twitterUserId: string;
 
     @IsString()
     @IsNotEmpty()
     @Expose()
     profileImageUrl: string;
 
+    @IsArray()
+    @Expose()
+    categories: string[];
+
     @IsObject()
     @IsNotEmpty()
     @Expose()
     twitterProvider: object;
-
-    @Expose()
-    @Transform(({ value }) => new Date(value), { toClassOnly: true })
-    createdAt: Date;
 }

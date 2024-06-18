@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -8,19 +8,22 @@ export class User {
   @Prop()
   name: string;
 
-  @Prop({ required: true })
-  userName: string;
+  @Prop()
+  _id: Types.ObjectId;
 
   @Prop()
-  profileImageUrl: string;
+  twitterUserId: string;
 
   @Prop({ type: Object })
   twitterProvider: object;
 
   @Prop()
+  categories: string[];
+
+  @Prop({ required: true, default: new Date() })
   createdAt: Date;
 
-  @Prop()
+  @Prop({ required: true, default: new Date() })
   updatedAt: Date;
 
   @Prop()

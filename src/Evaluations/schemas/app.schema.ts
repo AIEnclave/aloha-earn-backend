@@ -5,8 +5,8 @@ export type EvaluationsDocument = Evaluations & Document;
 
 @Schema()
 export class Evaluations {
-  @Prop({ type: Object })
-  response: object;
+  @Prop()
+  response: string;
 
   @Prop({ required: true })
   evaluatorId: string;
@@ -15,24 +15,15 @@ export class Evaluations {
   rate: number;
 
   @Prop()
-  seen: boolean;
-
-  @Prop()
-  bookmarked: boolean;
-
-  @Prop()
-  reason: string;
+  reasonId: string;
 
   @Prop()
   isValidReason: boolean;
 
-  @Prop()
-  moderationScore: number;
-
-  @Prop()
+  @Prop({ required: true, default: new Date() })
   createdAt: Date;
 
-  @Prop()
+  @Prop({ required: true, default: new Date() })
   updatedAt: Date;
 
   @Prop()

@@ -6,38 +6,35 @@ import {
     Param,
     Post,
     Put,
+    Req,
+    UseGuards
   } from '@nestjs/common';
+  import mongoose from 'mongoose';
+  import { AuthGuard } from '../auth.gaurd';
   import { CreateEvaluationsDto } from './dto/create.dto';
   import { UpdateEvaluationsDto } from './dto/update.dto';
   import { EvaluationsService } from './app.service';
+  import { UserService } from '../User/app.service';
+
+  interface CustomRequest extends Request {
+    user?: any; // Adjust the type according to your user object
+  }
   
   @Controller('evaluations')
   export class EvaluationsController {
-    constructor(private readonly service: EvaluationsService) {}
-  
-    @Get()
-    async index() {
-      return await this.service.findAll();
-    }
-  
-    @Get(':id')
-    async find(@Param('id') id: string) {
-      return await this.service.findOne(id);
-    }
-  
+    constructor(
+      private readonly service: EvaluationsService,
+      private readonly userService: UserService,
+    ) {}
+
+    @UseGuards(AuthGuard)
     @Post()
-    async create(@Body() createEvaluationsDto: CreateEvaluationsDto) {
+    async create(@Body() createEvaluationsDto: CreateEvaluationsDto, @Req() request: CustomRequest) {
       console.log({ createEvaluationsDto });
+      console.log("::::request.user::::", request.user)
+      let userDetails = await this.userService.findByTwitterId(request.user.userDetails);
+      console.log("userDetails:::", userDetails)
+      createEvaluationsDto.evaluatorId = (userDetails._id as mongoose.Types.ObjectId).toString();
       return await this.service.create(createEvaluationsDto);
-    }
-  
-    @Put(':id')
-    async update(@Param('id') id: string, @Body() updateEvaluationsDto: UpdateEvaluationsDto) {
-      return await this.service.update(id, updateEvaluationsDto);
-    }
-  
-    @Delete(':id')
-    async delete(@Param('id') id: string) {
-      return await this.service.delete(id);
     }
   }

@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create.dto';
 import { UpdateUserDto } from './dto/update.dto';
+import { UpdateCategoryDto } from './dto/updateCategory.dto'
 import { User, UserDocument } from './schemas/app.schema';
 
 @Injectable()
@@ -23,10 +24,17 @@ export class UserService {
     return await this.model.findById(id).exec();
   }
 
-  async findByTwitterToken(createUserDto: CreateUserDto): Promise<User> {
+  async findCategoryByTwitterId(createUserDto: CreateUserDto): Promise<User> {
     console.log("createUserDto.twitterProvider", createUserDto.twitterProvider)
     return await this.model.findOne({
-      userName: createUserDto.userName
+      twitterUserId: createUserDto.twitterUserId
+    }).exec();
+  }
+
+  async findByTwitterId(createUserDto: CreateUserDto): Promise<User> {
+    // console.log("createUserDto.twitterProvider", createUserDto.twitterProvider)
+    return await this.model.findOne({
+      twitterUserId: createUserDto.twitterUserId
     }).exec();
   }
 
@@ -37,8 +45,8 @@ export class UserService {
     }).save();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return await this.model.findByIdAndUpdate(id, updateUserDto).exec();
+  async update(filter: object, updateUserDto: UpdateCategoryDto): Promise<User> {
+    return await this.model.findOneAndUpdate(filter, updateUserDto).exec();
   }
 
   async delete(id: string): Promise<User> {

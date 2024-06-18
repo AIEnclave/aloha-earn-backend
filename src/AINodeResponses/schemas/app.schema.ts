@@ -5,14 +5,6 @@ export type AINodeResponsesDocument = AINodeResponses & Document;
 
 @Schema()
 export class AINodeResponses {
-  @Prop()
-  name: string;
-
-  @Prop({ required: true })
-  creatorId: string;
-
-  @Prop({ required: true })
-  nodeId: string;
 
   @Prop()
   prompt: string;
@@ -20,16 +12,10 @@ export class AINodeResponses {
   @Prop()
   answer: string;
 
-  @Prop()
-  accumulativePostiveRating: number;
-
-  @Prop()
-  accumulativeNegativeRating: number;
-
-  @Prop()
+  @Prop({ required: true, default: new Date() })
   createdAt: Date;
 
-  @Prop()
+  @Prop({ required: true, default: new Date() })
   updatedAt: Date;
 
   @Prop()

@@ -14,8 +14,9 @@ export class AINodeResponsesService {
     @InjectModel(AINodeResponses.name) private readonly model: Model<AINodeResponsesDocument>,
   ) {}
 
-  async findAll(): Promise<AINodeResponses[]> {
-    return await this.model.find().exec();
+  async findAll(allReasonId: string[]): Promise<AINodeResponses[]> {
+    console.log(":::::allReasonId::::", allReasonId)
+    return await this.model.find({ _id: { $nin: allReasonId } }).exec();
   }
 
   async findOne(id: string): Promise<AINodeResponses> {
@@ -25,7 +26,6 @@ export class AINodeResponsesService {
   async create(createAINodeResponsesDto: CreateAINodeResponsesDto): Promise<AINodeResponses> {
     return await new this.model({
       ...createAINodeResponsesDto,
-      createdAt: new Date(),
     }).save();
   }
 

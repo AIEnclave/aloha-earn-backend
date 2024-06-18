@@ -14,6 +14,10 @@ export class EvaluationsService {
     @InjectModel(Evaluations.name) private readonly model: Model<EvaluationsDocument>,
   ) {}
 
+  async findAllForUser(evaluatorId: string): Promise<Evaluations[]> {
+    return await this.model.find({ evaluatorId }).exec();
+  }
+
   async findAll(): Promise<Evaluations[]> {
     return await this.model.find().exec();
   }
@@ -25,7 +29,6 @@ export class EvaluationsService {
   async create(createEvaluationsDto: CreateEvaluationsDto): Promise<Evaluations> {
     return await new this.model({
       ...createEvaluationsDto,
-      createdAt: new Date(),
     }).save();
   }
 
