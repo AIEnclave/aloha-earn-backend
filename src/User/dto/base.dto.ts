@@ -12,6 +12,9 @@ export class BaseUserDto {
     @Expose()
     twitterUserId: string;
 
+    @Expose()
+    tokenEarned: number;
+
     @IsString()
     @IsNotEmpty()
     @Expose()

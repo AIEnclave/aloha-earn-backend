@@ -17,7 +17,7 @@ import {
   import { UserService } from '../User/app.service';
 
   interface CustomRequest extends Request {
-    user?: any; // Adjust the type according to your user object
+    user?: any;
   }
   
   @Controller('evaluations')
@@ -31,9 +31,10 @@ import {
     @Post()
     async create(@Body() createEvaluationsDto: CreateEvaluationsDto, @Req() request: CustomRequest) {
       console.log({ createEvaluationsDto });
-      console.log("::::request.user::::", request.user)
+      // openai call
       let userDetails = await this.userService.findByTwitterId(request.user.userDetails);
-      console.log("userDetails:::", userDetails)
+      userDetails.tokenEarned += 1
+      await this.userService.update({twitterUserId: userDetails.twitterUserId}, userDetails);
       createEvaluationsDto.evaluatorId = (userDetails._id as mongoose.Types.ObjectId).toString();
       return await this.service.create(createEvaluationsDto);
     }

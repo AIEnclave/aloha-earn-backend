@@ -36,11 +36,12 @@ import {
       let userDetails = await this.userService.findByTwitterId(request.user.userDetails);
       // console.log("userDetails:::", userDetails)
       const evaluatorId = (userDetails._id as mongoose.Types.ObjectId).toString();
+      const categories = userDetails.categories || []
       const completedEvaluation = await this.evaluationService.findAllForUser(evaluatorId)
       // console.log("completedEvaluation", completedEvaluation)
       const allReasonId = completedEvaluation.map(evaluation => evaluation.reasonId)
       // console.log(":::allReasonId:::", allReasonId)
-      return await this.service.findAll(allReasonId);
+      return await this.service.findAll(allReasonId, categories);
     }
   
     @Get(':id')

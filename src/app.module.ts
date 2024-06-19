@@ -21,6 +21,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './Auth/Auth.module';
+import { OpenaiModule } from "./AI/ai.module";
 
 @Module({
   imports: [
@@ -55,7 +56,8 @@ import { AuthModule } from './Auth/Auth.module';
     AINodeResponsesModule,
     CategoriesModule,
     EvaluationsModule,
-    AuthModule
+    AuthModule,
+    OpenaiModule
   ],
   controllers: [AppController],
   providers: [AppService],

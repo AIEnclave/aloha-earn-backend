@@ -12,4 +12,9 @@ export class BaseAINodeResponsesDto {
     @IsNotEmpty()
     @Expose()
     answer: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @Expose()
+    category: string;
 }

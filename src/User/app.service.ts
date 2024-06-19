@@ -45,7 +45,8 @@ export class UserService {
     }).save();
   }
 
-  async update(filter: object, updateUserDto: UpdateCategoryDto): Promise<User> {
+  async update(filter: object, updateUserDto: UpdateUserDto): Promise<User> {
+    console.log("::::===updateUserDto===::::", updateUserDto)
     return await this.model.findOneAndUpdate(filter, updateUserDto).exec();
   }
 

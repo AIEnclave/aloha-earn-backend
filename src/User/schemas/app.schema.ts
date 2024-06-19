@@ -14,6 +14,9 @@ export class User {
   @Prop()
   twitterUserId: string;
 
+  @Prop({ default: 0 })
+  tokenEarned: number
+
   @Prop({ type: Object })
   twitterProvider: object;
 

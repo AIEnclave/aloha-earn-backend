@@ -57,14 +57,17 @@ import {
 
     @Post('signin')
     async signin(@Body() createUserDto: CreateUserDto) {
-      console.log({ createUserDto });
+      console.log("createUserDto:::::", createUserDto);
       let userDetails = await this.service.findByTwitterId(createUserDto);
+      console.log("userDetails:::: 11111", userDetails)
       if(userDetails) {
 
       } else {
         userDetails = await this.service.create(createUserDto);
       }
+      console.log("userDetails:::: REACHED 1")
       const alohaAccessToken = await this.jwtService.signAsync({userDetails: createUserDto})
+      console.log("userDetails:::: REACHED 2")
       return {
         userDetails,
         alohaAccessToken
@@ -73,10 +76,10 @@ import {
 
     @UseGuards(AuthGuard)
     @Put()
-    async update(@Body() updateCategoryDto: UpdateCategoryDto, @Req() request: CustomRequest) {
+    async update(@Body() updateUserDto: UpdateUserDto, @Req() request: CustomRequest) {
       console.log("request.user::::::", request.user); 
       let userDetails = await this.service.findByTwitterId(request.user.userDetails);
-      return await this.service.update(userDetails, updateCategoryDto);
+      return await this.service.update(userDetails, updateUserDto);
     }
   
     @Delete(':id')

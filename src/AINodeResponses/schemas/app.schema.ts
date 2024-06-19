@@ -12,6 +12,9 @@ export class AINodeResponses {
   @Prop()
   answer: string;
 
+  @Prop()
+  category: string;
+
   @Prop({ required: true, default: new Date() })
   createdAt: Date;
 
